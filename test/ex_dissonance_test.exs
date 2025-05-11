@@ -2,6 +2,7 @@ defmodule ExDissonanceTest do
   use ExUnit.Case
   doctest ExDissonance
 
+  alias ExDissonance.ClientInfo
   alias ExDissonance.Packet
   alias ExDissonance.Packets
 
@@ -46,7 +47,7 @@ defmodule ExDissonanceTest do
         session_id: 12345,
         client_id: 6550,
         clients: [
-          %{
+          %ClientInfo{
             player_name: "John Doe",
             player_id: 6550,
             codec_type: 1,

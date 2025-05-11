@@ -1,7 +1,7 @@
 defmodule ExDissonance.Packets.HandshakeRequest do
   @moduledoc """
   Handshake request packet.
-  
+
   Sent from client to server when joining a session.
   """
 
@@ -51,4 +51,10 @@ defmodule ExDissonance.Packets.HandshakeRequest do
       encoded_name::binary
     >>
   end
+
+  @doc """
+  Returns the peer ID of the packet, which is nil since this packet doesn't have an origin identifier.
+  """
+  @impl ExDissonance.Packet
+  def peer_id(%__MODULE__{} = _packet), do: nil
 end

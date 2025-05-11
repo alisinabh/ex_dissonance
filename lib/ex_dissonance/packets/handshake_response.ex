@@ -1,27 +1,21 @@
 defmodule ExDissonance.Packets.HandshakeResponse do
   @moduledoc """
   Handshake response packet.
-  
+
   Sent from server to client in response to a HandshakeRequest.
   """
 
   use TypedStruct
 
+  alias ExDissonance.ClientInfo
+
   typedstruct enforce: true do
     field :session_id, integer()
     field :client_id, integer()
-    field :clients, [client()]
+    field :clients, [ClientInfo.t()]
     field :room_names, [String.t()]
     field :channels, [channel()]
   end
-
-  @type client :: %{
-          player_name: String.t(),
-          player_id: integer(),
-          codec_type: integer(),
-          frame_size: integer(),
-          sample_rate: integer()
-        }
 
   @type channel :: %{
           channel_id: integer(),
@@ -59,7 +53,7 @@ defmodule ExDissonance.Packets.HandshakeResponse do
             acc::binary
           >> = acc
 
-          client = %{
+          client = %ClientInfo{
             player_name: player_name,
             player_id: player_id,
             codec_type: codec_type,
@@ -130,7 +124,7 @@ defmodule ExDissonance.Packets.HandshakeResponse do
 
     encoded_clients =
       if client_count > 0 do
-        Enum.map_join(payload.clients, fn client ->
+        Enum.map_join(payload.clients, fn %ClientInfo{} = client ->
           encoded_name = encode_string(client.player_name)
 
           <<
@@ -183,4 +177,10 @@ defmodule ExDissonance.Packets.HandshakeResponse do
       encoded_channels::binary
     >>
   end
+
+  @doc """
+  Returns the peer ID of the packet, which is the client_id.
+  """
+  @impl ExDissonance.Packet
+  def peer_id(%__MODULE__{} = packet), do: packet.client_id
 end

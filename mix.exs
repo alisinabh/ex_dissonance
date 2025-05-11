@@ -21,7 +21,9 @@ defmodule ExDissonance.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:typed_struct, "~> 0.3.0"}
+      {:typed_struct, "~> 0.3.0"},
+      {:phoenix_pubsub, "~> 2.1"},
+      {:fnv1a, "~> 0.1.0"}
     ]
   end
 end

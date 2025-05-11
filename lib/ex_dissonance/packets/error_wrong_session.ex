@@ -1,7 +1,7 @@
 defmodule ExDissonance.Packets.ErrorWrongSession do
   @moduledoc """
   Error wrong session packet.
-  
+
   Sent from server to clients which use the wrong session ID.
   """
 
@@ -34,4 +34,10 @@ defmodule ExDissonance.Packets.ErrorWrongSession do
       payload.session_id::32
     >>
   end
+
+  @doc """
+  Returns the peer ID of the packet, which is nil since this packet doesn't have an origin identifier.
+  """
+  @impl ExDissonance.Packet
+  def peer_id(%__MODULE__{} = _packet), do: nil
 end

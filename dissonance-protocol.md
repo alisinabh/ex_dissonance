@@ -173,6 +173,49 @@ Strings in the Dissonance protocol are encoded using the following format:
 
 Rooms are identified by name and a corresponding room ID. The room ID is computed from the room name using a hashing function.
 
+### Room ID Hashing Algorithm
+
+The room ID is a 16-bit unsigned integer computed using a two-step process:
+
+1. First, the room name is hashed using the FNV-1a algorithm (Fowler-Noll-Vo hash):
+   ```
+   function GetFnvHashCode(string str):
+     if str is null:
+       return 0
+     
+     // FNV-1a constants
+     hash = 2166136261  // FNV offset basis
+     prime = 16777619   // FNV prime
+     
+     for each character c in str:
+       // Split character into high and low bytes
+       byte b1 = (c >> 8)      // High byte
+       byte b2 = (c & 0xFF)    // Low byte
+       
+       // Process high byte
+       hash = hash ^ b1
+       hash = hash * prime
+       
+       // Process low byte
+       hash = hash ^ b2
+       hash = hash * prime
+     
+     return hash as 32-bit signed integer
+   ```
+
+2. Then, the 32-bit FNV hash is mixed down to a 16-bit hash:
+   ```
+   function Hash16(integer hash):
+     // Extract upper and lower 16 bits
+     ushort upper = (hash >> 16) & 0xFFFF
+     ushort lower = hash & 0xFFFF
+     
+     // Mix with prime multipliers
+     return (upper * 5791 + lower * 7639) & 0xFFFF
+   ```
+
+This algorithm ensures consistent room IDs across different platforms while minimizing hash collisions in typical use cases.
+
 ## Channel Types
 
 Channels can be one of two types:

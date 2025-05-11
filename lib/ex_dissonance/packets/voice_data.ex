@@ -1,7 +1,7 @@
 defmodule ExDissonance.Packets.VoiceData do
   @moduledoc """
   Voice data packet.
-  
+
   Sent from client to server, and then from server to listening clients.
   """
 
@@ -90,4 +90,10 @@ defmodule ExDissonance.Packets.VoiceData do
       payload.voice_data::binary
     >>
   end
+
+  @doc """
+  Returns the peer ID of the packet, which is the sender_id.
+  """
+  @impl ExDissonance.Packet
+  def peer_id(%__MODULE__{} = packet), do: packet.sender_id
 end

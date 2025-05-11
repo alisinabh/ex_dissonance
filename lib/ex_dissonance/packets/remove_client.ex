@@ -1,7 +1,7 @@
 defmodule ExDissonance.Packets.RemoveClient do
   @moduledoc """
   Remove client packet.
-  
+
   Sent from server to remove a client from the session.
   """
 
@@ -34,4 +34,10 @@ defmodule ExDissonance.Packets.RemoveClient do
       payload.client_id::16
     >>
   end
+
+  @doc """
+  Returns the peer ID of the packet, which is nil since this packet doesn't have an origin identifier.
+  """
+  @impl ExDissonance.Packet
+  def peer_id(%__MODULE__{} = _packet), do: nil
 end

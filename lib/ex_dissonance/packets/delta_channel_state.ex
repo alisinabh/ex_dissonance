@@ -1,7 +1,7 @@
 defmodule ExDissonance.Packets.DeltaChannelState do
   @moduledoc """
   Delta channel state packet.
-  
+
   Sent from server to client when clients open or close a channel.
   """
 
@@ -48,4 +48,10 @@ defmodule ExDissonance.Packets.DeltaChannelState do
       encoded_channel_name::binary
     >>
   end
+
+  @doc """
+  Returns the peer ID of the packet.
+  """
+  @impl ExDissonance.Packet
+  def peer_id(%__MODULE__{} = packet), do: packet.peer_id
 end

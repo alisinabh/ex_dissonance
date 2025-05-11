@@ -1,6 +1,8 @@
 defmodule ExDissonance.Packets.ClientState do
   @moduledoc """
   Client state packet.
+
+  Sent from client to server whenever the client enters or exits a room.
   """
 
   use TypedStruct
@@ -65,4 +67,10 @@ defmodule ExDissonance.Packets.ClientState do
       encoded_rooms::binary
     >>
   end
+
+  @doc """
+  Returns the peer ID of the packet, which is the player_id.
+  """
+  @impl ExDissonance.Packet
+  def peer_id(%__MODULE__{} = packet), do: packet.player_id
 end

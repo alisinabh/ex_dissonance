@@ -44,7 +44,10 @@ defmodule ExDissonance.Packet do
           )
 
   @doc "Returns the type of the packet in Dissonance protocol."
-  @callback type_id :: 1..11
+  @callback type_id() :: 1..11
+
+  @doc "Returns the peer ID of the packet in Dissonance protocol."
+  @callback peer_id(packet :: packet_struct()) :: non_neg_integer() | nil
 
   @doc "Decodes a Dissonance packet from binary data."
   @callback decode(binary()) :: packet_struct()

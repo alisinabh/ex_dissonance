@@ -1,7 +1,7 @@
 defmodule ExDissonance.Packets.ServerRelayUnreliable do
   @moduledoc """
   Server relay unreliable packet.
-  
+
   Relays data unreliably from one client to others via the server.
   """
 
@@ -64,4 +64,10 @@ defmodule ExDissonance.Packets.ServerRelayUnreliable do
       payload.data::binary
     >>
   end
+
+  @doc """
+  Returns the peer ID of the packet, which is nil since this packet doesn't have an origin identifier.
+  """
+  @impl ExDissonance.Packet
+  def peer_id(%__MODULE__{} = _packet), do: nil
 end

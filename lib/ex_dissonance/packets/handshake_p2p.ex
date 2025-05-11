@@ -1,7 +1,7 @@
 defmodule ExDissonance.Packets.HandshakeP2P do
   @moduledoc """
   Handshake P2P packet.
-  
+
   Sent for peer-to-peer connection establishment.
   """
 
@@ -34,4 +34,10 @@ defmodule ExDissonance.Packets.HandshakeP2P do
       payload.peer_id::16
     >>
   end
+
+  @doc """
+  Returns the peer ID of the packet.
+  """
+  @impl ExDissonance.Packet
+  def peer_id(%__MODULE__{} = packet), do: packet.peer_id
 end
