@@ -40,6 +40,36 @@ defmodule ExDissonanceTest do
     assert {:ok, packet} == ExDissonance.Packet.decode(packet_bin)
   end
 
+  test "encodes and decodes a HandshakeResponse packet with no channel peers" do
+    packet = %Packet{
+      session_id: 12345,
+      payload: %Packets.HandshakeResponse{
+        session_id: 12345,
+        client_id: 6550,
+        clients: [
+          %ClientInfo{
+            player_name: "John Doe",
+            player_id: 6550,
+            codec_type: 1,
+            frame_size: 1024,
+            sample_rate: 44100
+          }
+        ],
+        room_names: ["Room A", "Room B"],
+        channels: [
+          %{
+            channel_id: 1,
+            peers: []
+          }
+        ]
+      }
+    }
+
+    packet_bin = ExDissonance.Packet.encode(packet)
+
+    assert {:ok, packet} == ExDissonance.Packet.decode(packet_bin)
+  end
+
   test "encodes and decodes a HandshakeResponse packet" do
     packet = %Packet{
       session_id: 12345,

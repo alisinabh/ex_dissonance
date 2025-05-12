@@ -42,7 +42,7 @@ defmodule ExDissonance.Packets.HandshakeResponse do
 
     {clients, rest} =
       if client_count > 0 do
-        Enum.map_reduce(1..client_count, rest, fn _, acc ->
+        Enum.map_reduce(1..client_count//1, rest, fn _, acc ->
           {:ok, player_name, acc} = decode_string(acc)
 
           <<
@@ -69,7 +69,7 @@ defmodule ExDissonance.Packets.HandshakeResponse do
 
     {room_names, rest} =
       if room_name_count > 0 do
-        Enum.map_reduce(1..room_name_count, rest, fn _, acc ->
+        Enum.map_reduce(1..room_name_count//1, rest, fn _, acc ->
           {:ok, room_name, acc} = decode_string(acc)
           {room_name, acc}
         end)
@@ -79,7 +79,7 @@ defmodule ExDissonance.Packets.HandshakeResponse do
 
     {channels, _rest} =
       if channel_count > 0 do
-        Enum.map_reduce(1..channel_count, rest, fn _, acc ->
+        Enum.map_reduce(1..channel_count//1, rest, fn _, acc ->
           <<
             channel_id::16,
             peer_count::8,
@@ -87,7 +87,7 @@ defmodule ExDissonance.Packets.HandshakeResponse do
           >> = acc
 
           {peers, acc} =
-            Enum.map_reduce(1..peer_count, acc, fn _, peer_acc ->
+            Enum.map_reduce(1..peer_count//1, acc, fn _, peer_acc ->
               <<
                 peer_id::16,
                 peer_acc::binary

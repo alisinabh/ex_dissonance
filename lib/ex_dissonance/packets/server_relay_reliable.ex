@@ -25,7 +25,7 @@ defmodule ExDissonance.Packets.ServerRelayReliable do
     >> = bin
 
     {destinations, rest} =
-      Enum.map_reduce(1..destination_count, rest, fn _, acc ->
+      Enum.map_reduce(1..destination_count//1, rest, fn _, acc ->
         <<
           peer_id::16,
           acc::binary

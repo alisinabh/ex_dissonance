@@ -36,7 +36,7 @@ defmodule ExDissonance.Packets.VoiceData do
     >> = bin
 
     {channels, rest} =
-      Enum.map_reduce(1..channel_count, rest, fn _, acc ->
+      Enum.map_reduce(1..channel_count//1, rest, fn _, acc ->
         <<
           channel_bitfield::16,
           recipient_id::16,
