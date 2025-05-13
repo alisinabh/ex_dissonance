@@ -7,7 +7,6 @@ defmodule ExDissonance.Host do
   require Logger
 
   alias ExDissonance.ClientInfo
-  alias ExDissonance.Hash
   alias ExDissonance.Packet
   alias ExDissonance.Packets.ClientState
   alias ExDissonance.Packets.DeltaChannelState
@@ -100,16 +99,7 @@ defmodule ExDissonance.Host do
 
     resp = %HandshakeResponse{
       session_id: state.session_id,
-      client_id: peer_id,
-      clients: Map.values(state.peers),
-      room_names: Map.keys(state.rooms),
-      channels:
-        Enum.map(state.rooms, fn {room_name, peers} ->
-          %{
-            channel_id: Hash.to_room_id(room_name),
-            peers: peers
-          }
-        end)
+      client_id: peer_id
     }
 
     Process.monitor(from)

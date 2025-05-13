@@ -4,7 +4,6 @@ defmodule ExDissonance.HostTest do
   alias ExDissonance.Packets.VoiceData
   alias ExDissonance.Packets.ClientState
   alias ExDissonance.Packets.DeltaChannelState
-  alias ExDissonance.ClientInfo
   alias ExDissonance.Packets.HandshakeResponse
   alias ExDissonance.Packets.HandshakeRequest
   alias ExDissonance.Host
@@ -42,18 +41,7 @@ defmodule ExDissonance.HostTest do
 
       assert response == %HandshakeResponse{
                session_id: 1001,
-               client_id: 1,
-               clients: [
-                 %ClientInfo{
-                   frame_size: 23,
-                   codec_type: 12,
-                   sample_rate: 44100,
-                   player_name: "Alisina",
-                   player_id: 1
-                 }
-               ],
-               room_names: ["Game"],
-               channels: [%{peers: [], channel_id: 11000}]
+               client_id: 1
              }
     end
 

@@ -2,7 +2,6 @@ defmodule ExDissonanceTest do
   use ExUnit.Case
   doctest ExDissonance
 
-  alias ExDissonance.ClientInfo
   alias ExDissonance.Packet
   alias ExDissonance.Packets
 
@@ -45,23 +44,7 @@ defmodule ExDissonanceTest do
       session_id: 0,
       payload: %Packets.HandshakeResponse{
         session_id: 12345,
-        client_id: 6550,
-        clients: [
-          %ClientInfo{
-            player_name: "John Doe",
-            player_id: 6550,
-            codec_type: 1,
-            frame_size: 1024,
-            sample_rate: 44100
-          }
-        ],
-        room_names: ["Room A", "Room B"],
-        channels: [
-          %{
-            channel_id: 1,
-            peers: []
-          }
-        ]
+        client_id: 6550
       }
     }
 
@@ -75,23 +58,7 @@ defmodule ExDissonanceTest do
       session_id: 0,
       payload: %Packets.HandshakeResponse{
         session_id: 12345,
-        client_id: 6550,
-        clients: [
-          %ClientInfo{
-            player_name: "John Doe",
-            player_id: 6550,
-            codec_type: 1,
-            frame_size: 1024,
-            sample_rate: 44100
-          }
-        ],
-        room_names: ["Room A", "Room B"],
-        channels: [
-          %{
-            channel_id: 1,
-            peers: [6550, 6551]
-          }
-        ]
+        client_id: 6550
       }
     }
 
