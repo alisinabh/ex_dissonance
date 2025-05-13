@@ -26,7 +26,7 @@ defmodule ExDissonanceTest do
 
   test "encodes and decodes a HandshakeRequest packet" do
     packet = %Packet{
-      session_id: 12345,
+      session_id: 0,
       payload: %Packets.HandshakeRequest{
         codec_type: 1,
         frame_size: 1024,

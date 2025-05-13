@@ -34,6 +34,8 @@ defmodule ExDissonance.Packet do
     Packets.HandshakeP2P
   ]
 
+  @no_session_id_types [Packets.HandshakeRequest]
+
   @type_to_module @packet_types |> Enum.map(&{&1.type_id(), &1}) |> Map.new()
 
   @type packet_struct ::
@@ -59,9 +61,11 @@ defmodule ExDissonance.Packet do
   Decodes a Dissonance packet from binary data.
   """
   @spec decode(binary()) :: {:ok, packet_struct()} | {:error, atom()}
-  def decode(<<@header_magic_number::16, type::8, session_id::32, bin::binary>>) do
-    {:ok,
-     %__MODULE__{payload: Map.fetch!(@type_to_module, type).decode(bin), session_id: session_id}}
+  def decode(<<@header_magic_number::16, type::8, bin::binary>>) do
+    type_module = Map.fetch!(@type_to_module, type)
+    {session_id, bin} = extract_session_id(type_module, bin)
+
+    {:ok, %__MODULE__{payload: type_module.decode(bin), session_id: session_id}}
   end
 
   def decode(_), do: {:error, :invalid_packet}
@@ -71,6 +75,16 @@ defmodule ExDissonance.Packet do
   """
   @spec encode(packet :: t()) :: binary()
   def encode(%__MODULE__{payload: %type{} = payload, session_id: session_id}) do
-    <<@header_magic_number::16, type.type_id()::8, session_id::32>> <> type.encode(payload)
+    encoded_payload =
+      if type in @no_session_id_types do
+        type.encode(payload)
+      else
+        <<session_id::32>> <> type.encode(payload)
+      end
+
+    <<@header_magic_number::16, type.type_id()::8>> <> encoded_payload
   end
+
+  defp extract_session_id(type_module, bin) when type_module in @no_session_id_types, do: {0, bin}
+  defp extract_session_id(_type_module, <<session_id::32, bin::binary>>), do: {session_id, bin}
 end
