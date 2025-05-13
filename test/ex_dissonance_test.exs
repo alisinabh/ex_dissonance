@@ -42,7 +42,7 @@ defmodule ExDissonanceTest do
 
   test "encodes and decodes a HandshakeResponse packet with no channel peers" do
     packet = %Packet{
-      session_id: 12345,
+      session_id: 0,
       payload: %Packets.HandshakeResponse{
         session_id: 12345,
         client_id: 6550,
@@ -72,7 +72,7 @@ defmodule ExDissonanceTest do
 
   test "encodes and decodes a HandshakeResponse packet" do
     packet = %Packet{
-      session_id: 12345,
+      session_id: 0,
       payload: %Packets.HandshakeResponse{
         session_id: 12345,
         client_id: 6550,

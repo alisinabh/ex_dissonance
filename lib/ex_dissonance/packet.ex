@@ -34,7 +34,7 @@ defmodule ExDissonance.Packet do
     Packets.HandshakeP2P
   ]
 
-  @no_session_id_types [Packets.HandshakeRequest]
+  @no_session_id_types [Packets.HandshakeRequest, Packets.HandshakeResponse]
 
   @type_to_module @packet_types |> Enum.map(&{&1.type_id(), &1}) |> Map.new()
 
