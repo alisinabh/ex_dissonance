@@ -169,6 +169,11 @@ defmodule ExDissonance.Host do
     {:reply, {:ok, nil}, state}
   end
 
+  defp handle_packet_in(%Packet{payload: %type{}}, _from, %State{} = state) do
+    Logger.warning("Received Unsupported packet type: #{inspect(type)}")
+    {:reply, {:ok, nil}, state}
+  end
+
   defp verify_packet_origin(%Packet{payload: %HandshakeRequest{}}, from, state) do
     if state.peers[from] do
       {:error, :already_known_peer}
