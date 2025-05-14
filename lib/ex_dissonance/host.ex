@@ -79,7 +79,10 @@ defmodule ExDissonance.Host do
       end)
       |> Map.new()
 
-    publish!({:packet_payload, %RemoveClient{client_id: peer_id}}, state)
+    publish!(
+      {:packet_payload, %RemoveClient{session_id: state.session_id, client_id: peer_id}},
+      state
+    )
 
     {:noreply, %State{state | peers: peers, rooms: rooms}}
   end
@@ -143,7 +146,12 @@ defmodule ExDissonance.Host do
       Enum.map(actions, fn {joined?, player_id, room_name} ->
         publish!(
           {:packet_payload,
-           %DeltaChannelState{peer_id: player_id, channel_name: room_name, joined: joined?}},
+           %DeltaChannelState{
+             session_id: state.session_id,
+             peer_id: player_id,
+             channel_name: room_name,
+             joined: joined?
+           }},
           state
         )
 

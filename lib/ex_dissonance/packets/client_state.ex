@@ -8,6 +8,7 @@ defmodule ExDissonance.Packets.ClientState do
   use TypedStruct
 
   typedstruct enforce: true do
+    field :session_id, integer()
     field :player_name, String.t()
     field :player_id, integer()
     field :codec_type, integer()
@@ -25,7 +26,8 @@ defmodule ExDissonance.Packets.ClientState do
 
   @impl ExDissonance.Packet
   def decode(bin) do
-    {:ok, name, bin} = decode_string(bin)
+    <<session_id::32, rest::binary>> = bin
+    {:ok, name, bin} = decode_string(rest)
 
     <<
       player_id::16,
@@ -43,6 +45,7 @@ defmodule ExDissonance.Packets.ClientState do
       end)
 
     %__MODULE__{
+      session_id: session_id,
       player_name: name,
       player_id: player_id,
       codec_type: codec_type,
@@ -58,6 +61,7 @@ defmodule ExDissonance.Packets.ClientState do
     encoded_rooms = Enum.map_join(payload.rooms, &encode_string/1)
 
     <<
+      payload.session_id::32,
       encoded_name::binary,
       payload.player_id::16,
       payload.codec_type::8,

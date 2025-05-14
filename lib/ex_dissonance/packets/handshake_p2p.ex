@@ -8,6 +8,7 @@ defmodule ExDissonance.Packets.HandshakeP2P do
   use TypedStruct
 
   typedstruct enforce: true do
+    field :session_id, integer()
     field :peer_id, integer()
   end
 
@@ -19,11 +20,13 @@ defmodule ExDissonance.Packets.HandshakeP2P do
   @impl ExDissonance.Packet
   def decode(bin) do
     <<
+      session_id::32,
       peer_id::16,
       _rest::binary
     >> = bin
 
     %__MODULE__{
+      session_id: session_id,
       peer_id: peer_id
     }
   end
@@ -31,6 +34,7 @@ defmodule ExDissonance.Packets.HandshakeP2P do
   @impl ExDissonance.Packet
   def encode(%__MODULE__{} = payload) do
     <<
+      payload.session_id::32,
       payload.peer_id::16
     >>
   end

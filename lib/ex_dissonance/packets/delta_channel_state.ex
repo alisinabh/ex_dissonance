@@ -8,6 +8,7 @@ defmodule ExDissonance.Packets.DeltaChannelState do
   use TypedStruct
 
   typedstruct enforce: true do
+    field :session_id, integer()
     field :joined, boolean()
     field :peer_id, integer()
     field :channel_name, String.t()
@@ -23,6 +24,7 @@ defmodule ExDissonance.Packets.DeltaChannelState do
   @impl ExDissonance.Packet
   def decode(bin) do
     <<
+      session_id::32,
       joined::8,
       peer_id::16,
       rest::binary
@@ -31,6 +33,7 @@ defmodule ExDissonance.Packets.DeltaChannelState do
     {:ok, channel_name, _rest} = decode_string(rest)
 
     %__MODULE__{
+      session_id: session_id,
       joined: joined == 1,
       peer_id: peer_id,
       channel_name: channel_name
@@ -43,6 +46,7 @@ defmodule ExDissonance.Packets.DeltaChannelState do
     joined_value = if payload.joined, do: 1, else: 0
 
     <<
+      payload.session_id::32,
       joined_value::8,
       payload.peer_id::16,
       encoded_channel_name::binary

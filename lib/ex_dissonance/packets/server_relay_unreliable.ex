@@ -8,6 +8,7 @@ defmodule ExDissonance.Packets.ServerRelayUnreliable do
   use TypedStruct
 
   typedstruct enforce: true do
+    field :session_id, integer()
     field :destinations, [integer()]
     field :data, binary()
   end
@@ -20,6 +21,7 @@ defmodule ExDissonance.Packets.ServerRelayUnreliable do
   @impl ExDissonance.Packet
   def decode(bin) do
     <<
+      session_id::32,
       destination_count::8,
       rest::binary
     >> = bin
@@ -41,6 +43,7 @@ defmodule ExDissonance.Packets.ServerRelayUnreliable do
     >> = rest
 
     %__MODULE__{
+      session_id: session_id,
       destinations: destinations,
       data: data
     }
@@ -58,6 +61,7 @@ defmodule ExDissonance.Packets.ServerRelayUnreliable do
     data_length = byte_size(payload.data)
 
     <<
+      payload.session_id::32,
       destination_count::8,
       encoded_destinations::binary,
       data_length::16,

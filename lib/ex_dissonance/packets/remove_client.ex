@@ -8,6 +8,7 @@ defmodule ExDissonance.Packets.RemoveClient do
   use TypedStruct
 
   typedstruct enforce: true do
+    field :session_id, integer()
     field :client_id, integer()
   end
 
@@ -19,11 +20,13 @@ defmodule ExDissonance.Packets.RemoveClient do
   @impl ExDissonance.Packet
   def decode(bin) do
     <<
+      session_id::32,
       client_id::16,
       _rest::binary
     >> = bin
 
     %__MODULE__{
+      session_id: session_id,
       client_id: client_id
     }
   end
@@ -31,6 +34,7 @@ defmodule ExDissonance.Packets.RemoveClient do
   @impl ExDissonance.Packet
   def encode(%__MODULE__{} = payload) do
     <<
+      payload.session_id::32,
       payload.client_id::16
     >>
   end

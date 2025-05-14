@@ -7,8 +7,8 @@ defmodule ExDissonanceTest do
 
   test "encodes and decodes a ClientState packet" do
     packet = %Packet{
-      session_id: 12345,
       payload: %Packets.ClientState{
+        session_id: 12345,
         player_name: "John Doe",
         player_id: 6550,
         codec_type: 1,
@@ -25,7 +25,6 @@ defmodule ExDissonanceTest do
 
   test "encodes and decodes a HandshakeRequest packet" do
     packet = %Packet{
-      session_id: 0,
       payload: %Packets.HandshakeRequest{
         codec_type: 1,
         frame_size: 1024,
@@ -41,7 +40,6 @@ defmodule ExDissonanceTest do
 
   test "encodes and decodes a HandshakeResponse packet with no channel peers" do
     packet = %Packet{
-      session_id: 0,
       payload: %Packets.HandshakeResponse{
         session_id: 12345,
         client_id: 6550
@@ -55,7 +53,6 @@ defmodule ExDissonanceTest do
 
   test "encodes and decodes a HandshakeResponse packet" do
     packet = %Packet{
-      session_id: 0,
       payload: %Packets.HandshakeResponse{
         session_id: 12345,
         client_id: 6550
@@ -69,8 +66,8 @@ defmodule ExDissonanceTest do
 
   test "encodes and decodes a VoiceData packet" do
     packet = %Packet{
-      session_id: 12345,
       payload: %Packets.VoiceData{
+        session_id: 12345,
         sender_id: 6550,
         options: 0x01,
         sequence_number: 123,
@@ -91,8 +88,8 @@ defmodule ExDissonanceTest do
 
   test "encodes and decodes a TextData packet" do
     packet = %Packet{
-      session_id: 12345,
       payload: %Packets.TextData{
+        session_id: 12345,
         channel_type: 0,
         sender_id: 6550,
         target_id: 1,
@@ -107,7 +104,6 @@ defmodule ExDissonanceTest do
 
   test "encodes and decodes an ErrorWrongSession packet" do
     packet = %Packet{
-      session_id: 12345,
       payload: %Packets.ErrorWrongSession{
         session_id: 54321
       }
@@ -120,8 +116,8 @@ defmodule ExDissonanceTest do
 
   test "encodes and decodes a ServerRelayReliable packet" do
     packet = %Packet{
-      session_id: 12345,
       payload: %Packets.ServerRelayReliable{
+        session_id: 12345,
         destinations: [6550, 6551],
         data: <<1, 2, 3, 4, 5>>
       }
@@ -134,8 +130,8 @@ defmodule ExDissonanceTest do
 
   test "encodes and decodes a ServerRelayUnreliable packet" do
     packet = %Packet{
-      session_id: 12345,
       payload: %Packets.ServerRelayUnreliable{
+        session_id: 12345,
         destinations: [6550, 6551],
         data: <<1, 2, 3, 4, 5>>
       }
@@ -148,8 +144,8 @@ defmodule ExDissonanceTest do
 
   test "encodes and decodes a DeltaChannelState packet" do
     packet = %Packet{
-      session_id: 12345,
       payload: %Packets.DeltaChannelState{
+        session_id: 12345,
         joined: true,
         peer_id: 6550,
         channel_name: "Room A"
@@ -163,8 +159,8 @@ defmodule ExDissonanceTest do
 
   test "encodes and decodes a RemoveClient packet" do
     packet = %Packet{
-      session_id: 12345,
       payload: %Packets.RemoveClient{
+        session_id: 12345,
         client_id: 6550
       }
     }
@@ -176,8 +172,8 @@ defmodule ExDissonanceTest do
 
   test "encodes and decodes a HandshakeP2P packet" do
     packet = %Packet{
-      session_id: 12345,
       payload: %Packets.HandshakeP2P{
+        session_id: 12345,
         peer_id: 6550
       }
     }

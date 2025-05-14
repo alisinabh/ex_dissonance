@@ -8,6 +8,7 @@ defmodule ExDissonance.Packets.TextData do
   use TypedStruct
 
   typedstruct enforce: true do
+    field :session_id, integer()
     field :channel_type, integer()
     field :sender_id, integer()
     field :target_id, integer()
@@ -24,6 +25,7 @@ defmodule ExDissonance.Packets.TextData do
   @impl ExDissonance.Packet
   def decode(bin) do
     <<
+      session_id::32,
       channel_type::8,
       sender_id::16,
       target_id::16,
@@ -33,6 +35,7 @@ defmodule ExDissonance.Packets.TextData do
     {:ok, text, _rest} = decode_string(rest)
 
     %__MODULE__{
+      session_id: session_id,
       channel_type: channel_type,
       sender_id: sender_id,
       target_id: target_id,
@@ -45,6 +48,7 @@ defmodule ExDissonance.Packets.TextData do
     encoded_text = encode_string(payload.text)
 
     <<
+      payload.session_id::32,
       payload.channel_type::8,
       payload.sender_id::16,
       payload.target_id::16,

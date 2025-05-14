@@ -30,7 +30,6 @@ defmodule ExDissonance.HostTest do
     test "returns correct handshake response", %{host_pid: host_pid} do
       assert {:ok, response} =
                Host.handle_packet(host_pid, %Packet{
-                 session_id: 0,
                  payload: %HandshakeRequest{
                    codec_type: 12,
                    frame_size: 23,
@@ -48,7 +47,6 @@ defmodule ExDissonance.HostTest do
     test "does not allow multiple handshakes", %{host_pid: host_pid} do
       assert {:ok, _response} =
                Host.handle_packet(host_pid, %Packet{
-                 session_id: 0,
                  payload: %HandshakeRequest{
                    codec_type: 12,
                    frame_size: 23,
@@ -59,7 +57,6 @@ defmodule ExDissonance.HostTest do
 
       assert {:error, :already_known_peer} =
                Host.handle_packet(host_pid, %Packet{
-                 session_id: 0,
                  payload: %HandshakeRequest{
                    codec_type: 12,
                    frame_size: 23,
@@ -72,7 +69,6 @@ defmodule ExDissonance.HostTest do
     test "Sends remove_client message to all peers on client leave", %{host_pid: host_pid} do
       assert {:ok, %HandshakeResponse{client_id: 1}} =
                Host.handle_packet(host_pid, %Packet{
-                 session_id: 0,
                  payload: %HandshakeRequest{
                    codec_type: 12,
                    frame_size: 23,
@@ -84,7 +80,6 @@ defmodule ExDissonance.HostTest do
       spawn_link(fn ->
         assert {:ok, %HandshakeResponse{client_id: 2}} =
                  Host.handle_packet(host_pid, %Packet{
-                   session_id: 0,
                    payload: %HandshakeRequest{
                      codec_type: 34,
                      frame_size: 45,
@@ -104,7 +99,6 @@ defmodule ExDissonance.HostTest do
     test "relays DeltaChannelState message to all peers", %{host_pid: host_pid} do
       assert {:ok, %HandshakeResponse{client_id: 1, session_id: session_id}} =
                Host.handle_packet(host_pid, %Packet{
-                 session_id: 0,
                  payload: %HandshakeRequest{
                    codec_type: 12,
                    frame_size: 23,
@@ -115,8 +109,8 @@ defmodule ExDissonance.HostTest do
 
       assert {:ok, nil} =
                Host.handle_packet(host_pid, %Packet{
-                 session_id: session_id,
                  payload: %ClientState{
+                   session_id: session_id,
                    player_name: "Alisina",
                    player_id: 1,
                    codec_type: 12,
@@ -129,7 +123,6 @@ defmodule ExDissonance.HostTest do
       spawn_link(fn ->
         assert {:ok, %HandshakeResponse{client_id: 2}} =
                  Host.handle_packet(host_pid, %Packet{
-                   session_id: 0,
                    payload: %HandshakeRequest{
                      codec_type: 34,
                      frame_size: 45,
@@ -140,8 +133,8 @@ defmodule ExDissonance.HostTest do
 
         assert {:ok, nil} =
                  Host.handle_packet(host_pid, %Packet{
-                   session_id: session_id,
                    payload: %ClientState{
+                     session_id: session_id,
                      player_name: "Azalia",
                      player_id: 2,
                      codec_type: 12,
@@ -167,7 +160,6 @@ defmodule ExDissonance.HostTest do
     test "relays voice data to subscribed clients", %{host_pid: host_pid} do
       assert {:ok, %HandshakeResponse{client_id: 1, session_id: session_id}} =
                Host.handle_packet(host_pid, %Packet{
-                 session_id: 0,
                  payload: %HandshakeRequest{
                    codec_type: 12,
                    frame_size: 23,
@@ -178,8 +170,8 @@ defmodule ExDissonance.HostTest do
 
       assert {:ok, nil} =
                Host.handle_packet(host_pid, %Packet{
-                 session_id: session_id,
                  payload: %ClientState{
+                   session_id: session_id,
                    player_name: "Alisina",
                    player_id: 1,
                    codec_type: 12,
@@ -190,6 +182,7 @@ defmodule ExDissonance.HostTest do
                })
 
       voice_payload = %VoiceData{
+        session_id: session_id,
         sender_id: 1,
         options: 0,
         sequence_number: 1,
@@ -200,7 +193,6 @@ defmodule ExDissonance.HostTest do
       spawn_link(fn ->
         assert {:ok, %HandshakeResponse{client_id: 2, session_id: session_id}} =
                  Host.handle_packet(host_pid, %Packet{
-                   session_id: 0,
                    payload: %HandshakeRequest{
                      codec_type: 34,
                      frame_size: 45,
@@ -211,8 +203,8 @@ defmodule ExDissonance.HostTest do
 
         assert {:ok, nil} =
                  Host.handle_packet(host_pid, %Packet{
-                   session_id: session_id,
                    payload: %ClientState{
+                     session_id: session_id,
                      player_name: "Azalia",
                      player_id: 2,
                      codec_type: 12,
@@ -227,7 +219,6 @@ defmodule ExDissonance.HostTest do
 
       assert {:ok, nil} =
                Host.handle_packet(host_pid, %Packet{
-                 session_id: session_id,
                  payload: voice_payload
                })
 

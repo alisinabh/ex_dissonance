@@ -8,6 +8,7 @@ defmodule ExDissonance.Packets.VoiceData do
   use TypedStruct
 
   typedstruct enforce: true do
+    field :session_id, integer()
     field :sender_id, integer()
     field :options, integer()
     field :sequence_number, integer()
@@ -28,6 +29,7 @@ defmodule ExDissonance.Packets.VoiceData do
   @impl ExDissonance.Packet
   def decode(bin) do
     <<
+      session_id::32,
       sender_id::16,
       options::8,
       sequence_number::16,
@@ -58,6 +60,7 @@ defmodule ExDissonance.Packets.VoiceData do
     >> = rest
 
     %__MODULE__{
+      session_id: session_id,
       sender_id: sender_id,
       options: options,
       sequence_number: sequence_number,
@@ -81,6 +84,7 @@ defmodule ExDissonance.Packets.VoiceData do
     voice_data_length = byte_size(payload.voice_data)
 
     <<
+      payload.session_id::32,
       payload.sender_id::16,
       payload.options::8,
       payload.sequence_number::16,
